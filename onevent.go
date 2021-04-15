@@ -35,8 +35,8 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/talkkonnect/gumble/gumble"
-	htgotts "github.com/talkkonnect/htgo-tts"
+	"github.com/jdiderik/gumble/gumble"
+	htgotts "github.com/jdiderik/htgo-tts"
 )
 
 func (b *Talkkonnect) OnConnect(e *gumble.ConnectEvent) {

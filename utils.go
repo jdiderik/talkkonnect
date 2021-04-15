@@ -52,8 +52,8 @@ import (
 
 	"github.com/glendc/go-external-ip"
 	"github.com/kennygrant/sanitize"
-	"github.com/talkkonnect/gumble/gumble"
-	term "github.com/talkkonnect/termbox-go"
+	"github.com/jdiderik/gumble/gumble"
+	term "github.com/jdiderik/termbox-go"
 	"github.com/xackery/gomail"
 )
 

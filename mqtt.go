@@ -48,7 +48,7 @@ package talkkonnect
 import (
 	"crypto/tls"
 	MQTT "github.com/eclipse/paho.mqtt.golang"
-	"github.com/talkkonnect/gpio"
+	"github.com/jdiderik/gpio"
 	"log"
 	"os"
 	"os/signal"

@@ -31,7 +31,7 @@ package talkkonnect
 
 import (
 	"github.com/stianeikeland/go-rpio"
-	"github.com/talkkonnect/gpio"
+	"github.com/jdiderik/gpio"
 	"log"
 	"time"
 )

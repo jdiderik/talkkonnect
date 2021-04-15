@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="talkkonnect/xml">
 	<accounts>
-		<account name="talkkonnect-community" default="true">
-			<serverandport>mumble.talkkonnect.com:64738</serverandport>
+		<account name="talkkonnect-go" default="true">
+			<serverandport>127.0.0.1:64738</serverandport>
 			<username></username>
 			<password>talkkonnect</password>
 			<insecure>true</insecure>
@@ -27,58 +27,58 @@
 			</settings>
 			<autoprovisioning enabled="false">
 				<tkid></tkid>
-				<url>http://www.replaceprovisioningserverhere.com</url>
-				<savefilepath>/home/talkkonnect/gocode/src/github.com/talkkonnect/talkkonnect</savefilepath>
+				<url>http://mycustomdomain.com</url>
+				<savefilepath>~/go/src/github.com/jdiderik/talkkonnect</savefilepath>
 				<savefilename>talkkonnect.xml</savefilename>
 			</autoprovisioning>
 			<beacon enabled="false">
 				<beacontimersecs>10</beacontimersecs>
-				<beaconfileandpath>/home/talkkonnect/gocode/src/github.com/talkkonnect/talkkonnect/soundfiles/voiceprompts/Beacon.wav</beaconfileandpath>
+				<beaconfileandpath>~/go/src/github.com/jdiderik/talkkonnect/soundfiles/voiceprompts/Beacon.wav</beaconfileandpath>
 				<volume>1</volume>
 			</beacon>
 			<tts enabled="false">
 				<volumelevel>70</volumelevel>
 				<participants>false</participants>
 				<channelup>true</channelup>
-				<channelupfilenameandpath>/home/talkkonnect/gocode/src/github.com/talkkonnect/talkkonnect/soundfiles/voiceprompts/ChannelUp.wav</channelupfilenameandpath>
+				<channelupfilenameandpath>~/go/src/github.com/jdiderik/talkkonnect/soundfiles/voiceprompts/ChannelUp.wav</channelupfilenameandpath>
 				<channeldown>true</channeldown>
-				<channeldownfilenameandpath>/home/talkkonnect/gocode/src/github.com/talkkonnect/talkkonnect/soundfiles/voiceprompts/ChannelDown.wav</channeldownfilenameandpath>
+				<channeldownfilenameandpath>~/go/src/github.com/jdiderik/talkkonnect/soundfiles/voiceprompts/ChannelDown.wav</channeldownfilenameandpath>
 				<muteunmutespeaker>true</muteunmutespeaker>
-				<muteunmutespeakerfilenameandpath>/home/talkkonnect/gocode/src/github.com/talkkonnect/talkkonnect/soundfiles/voiceprompts/MuteUnMuteSpeaker.wav</muteunmutespeakerfilenameandpath>
+				<muteunmutespeakerfilenameandpath>~/go/src/github.com/jdiderik/talkkonnect/soundfiles/voiceprompts/MuteUnMuteSpeaker.wav</muteunmutespeakerfilenameandpath>
 				<currentvolumelevel>true</currentvolumelevel>
-				<currentvolumelevelfilenameandpath>/home/talkkonnect/gocode/src/github.com/talkkonnect/talkkonnect/soundfiles/voiceprompts/CurrentVolumeLevel.wav</currentvolumelevelfilenameandpath>
+				<currentvolumelevelfilenameandpath>~/go/src/github.com/jdiderik/talkkonnect/soundfiles/voiceprompts/CurrentVolumeLevel.wav</currentvolumelevelfilenameandpath>
 				<digitalvolumeup>true</digitalvolumeup>
-				<digitalvolumeupfilenameandpath>/home/talkkonnect/gocode/src/github.com/talkkonnect/talkkonnect/soundfiles/voiceprompts/DigitalVolumeUp.wav</digitalvolumeupfilenameandpath>
+				<digitalvolumeupfilenameandpath>~/go/src/github.com/jdiderik/talkkonnect/soundfiles/voiceprompts/DigitalVolumeUp.wav</digitalvolumeupfilenameandpath>
 				<digitalvolumedown>true</digitalvolumedown>
-				<digitalvolumedownfilenameandpath>/home/talkkonnect/gocode/src/github.com/talkkonnect/talkkonnect/soundfiles/voiceprompts/DigitalVolumeDown.wav</digitalvolumedownfilenameandpath>
+				<digitalvolumedownfilenameandpath>~/go/src/github.com/jdiderik/talkkonnect/soundfiles/voiceprompts/DigitalVolumeDown.wav</digitalvolumedownfilenameandpath>
 				<listserverchannels>true</listserverchannels>
-				<listserverchannelsfilenameandpath>/home/talkkonnect/gocode/src/github.com/talkkonnect/talkkonnect/soundfiles/voiceprompts/ListServerChannels.wav</listserverchannelsfilenameandpath>
+				<listserverchannelsfilenameandpath>~/go/src/github.com/jdiderik/talkkonnect/soundfiles/voiceprompts/ListServerChannels.wav</listserverchannelsfilenameandpath>
 				<starttransmitting>true</starttransmitting>
-				<starttransmittingfilenameandpath>/home/talkkonnect/gocode/src/github.com/talkkonnect/talkkonnect/soundfiles/voiceprompts/StartTransmitting.wav</starttransmittingfilenameandpath>
+				<starttransmittingfilenameandpath>~/go/src/github.com/jdiderik/talkkonnect/soundfiles/voiceprompts/StartTransmitting.wav</starttransmittingfilenameandpath>
 				<stoptransmitting>true</stoptransmitting>
-				<stoptransmittingfilenameandpath>/home/talkkonnect/gocode/src/github.com/talkkonnect/talkkonnect/soundfiles/voiceprompts/StopTransmitting.wav</stoptransmittingfilenameandpath>
+				<stoptransmittingfilenameandpath>~/go/src/github.com/jdiderik/talkkonnect/soundfiles/voiceprompts/StopTransmitting.wav</stoptransmittingfilenameandpath>
 				<listonlineusers>true</listonlineusers>
-				<listonlineusersfilenameandpath>/home/talkkonnect/gocode/src/github.com/talkkonnect/talkkonnect/soundfiles/voiceprompts/ListOnlineUsers.wav</listonlineusersfilenameandpath>
+				<listonlineusersfilenameandpath>~/go/src/github.com/jdiderik/talkkonnect/soundfiles/voiceprompts/ListOnlineUsers.wav</listonlineusersfilenameandpath>
 				<playstream>true</playstream>
-				<playstreamfilenameandpath>/home/talkkonnect/gocode/src/github.com/talkkonnect/talkkonnect/soundfiles/voiceprompts/PlayStream.wav</playstreamfilenameandpath>
+				<playstreamfilenameandpath>~/go/src/github.com/jdiderik/talkkonnect/soundfiles/voiceprompts/PlayStream.wav</playstreamfilenameandpath>
 				<requestgpsposition>true</requestgpsposition>
-				<requestgpspositionfilenameandpath>/home/talkkonnect/gocode/src/github.com/talkkonnect/talkkonnect/soundfiles/voiceprompts/RequestGpsPosition.wav</requestgpspositionfilenameandpath>
+				<requestgpspositionfilenameandpath>~/go/src/github.com/jdiderik/talkkonnect/soundfiles/voiceprompts/RequestGpsPosition.wav</requestgpspositionfilenameandpath>
 				<nextserver>false</nextserver>
 				<nextserverfilenameandpath></nextserverfilenameandpath>
 				<previousserver>false</previousserver>
 				<previousserverfilenameandpath></previousserverfilenameandpath>
 				<panicsimulation>true</panicsimulation>
-				<panicsimulationfilenameandpath>/home/talkkonnect/gocode/src/github.com/talkkonnect/talkkonnect/soundfiles/voiceprompts/PanicSimulation.wav</panicsimulationfilenameandpath>
+				<panicsimulationfilenameandpath>~/go/src/github.com/jdiderik/talkkonnect/soundfiles/voiceprompts/PanicSimulation.wav</panicsimulationfilenameandpath>
 				<printxmlconfig>true</printxmlconfig>
-				<printxmlconfigfilenameandpath>/home/talkkonnect/gocode/src/github.com/talkkonnect/talkkonnect/soundfiles/voiceprompts/PrintXmlConfig.wav</printxmlconfigfilenameandpath>
+				<printxmlconfigfilenameandpath>~/go/src/github.com/jdiderik/talkkonnect/soundfiles/voiceprompts/PrintXmlConfig.wav</printxmlconfigfilenameandpath>
 				<sendemail>true</sendemail>
-				<sendemailfilenameandpath>/home/talkkonnect/gocode/src/github.com/talkkonnect/talkkonnect/soundfiles/voiceprompts/SendEmail.wav</sendemailfilenameandpath>
+				<sendemailfilenameandpath>~/go/src/github.com/jdiderik/talkkonnect/soundfiles/voiceprompts/SendEmail.wav</sendemailfilenameandpath>
 				<displaymenu>true</displaymenu>
-				<displaymenufilenameandpath>/home/talkkonnect/gocode/src/github.com/talkkonnect/talkkonnect/soundfiles/voiceprompts/DisplayMenu.wav</displaymenufilenameandpath>
+				<displaymenufilenameandpath>~/go/src/github.com/jdiderik/talkkonnect/soundfiles/voiceprompts/DisplayMenu.wav</displaymenufilenameandpath>
 				<quittalkkonnect>true</quittalkkonnect>
-				<quittalkkonnectfilenameandpath>/home/talkkonnect/gocode/src/github.com/talkkonnect/talkkonnect/soundfiles/voiceprompts/QuitTalkkonnect.wav</quittalkkonnectfilenameandpath>
+				<quittalkkonnectfilenameandpath>~/go/src/github.com/jdiderik/talkkonnect/soundfiles/voiceprompts/QuitTalkkonnect.wav</quittalkkonnectfilenameandpath>
 				<talkkonnectloaded>true</talkkonnectloaded>
-				<talkkonnectloadedfilenameandpath>/home/talkkonnect/gocode/src/github.com/talkkonnect/talkkonnect/soundfiles/voiceprompts/Loaded.wav</talkkonnectloadedfilenameandpath>
+				<talkkonnectloadedfilenameandpath>~/go/src/github.com/jdiderik/talkkonnect/soundfiles/voiceprompts/Loaded.wav</talkkonnectloadedfilenameandpath>
 				<pingservers>true</pingservers>
 				<pingserversfilenameandpath></pingserversfilenameandpath>
 			</tts>
@@ -87,27 +87,27 @@
 				<password>user</password>
 				<receiver>someone@somedomain.com</receiver>
 				<subject>Talkkonnect Email Message with GPS</subject>
-				<message>Hello From Talkkonnect</message>
+				<message>Hello From AML</message>
 				<gpsdatetime>true</gpsdatetime>
 				<gpslatlong>true</gpslatlong>
 				<googlemapsurl>true</googlemapsurl>
 			</smtp>
 			<sounds>
 				<event enabled="true">
-					<joinedfilenameandpath>/home/talkkonnect/gocode/src/github.com/talkkonnect/talkkonnect/soundfiles/events/event.wav</joinedfilenameandpath>
-					<leftfilenameandpath>/home/talkkonnect/gocode/src/github.com/talkkonnect/talkkonnect/soundfiles/events/left.wav</leftfilenameandpath>
-					<messagefilenameandpath>/home/talkkonnect/gocode/src/github.com/talkkonnect/talkkonnect/soundfiles/events/message.wav</messagefilenameandpath>
+					<joinedfilenameandpath>~/go/src/github.com/jdiderik/talkkonnect/soundfiles/events/event.wav</joinedfilenameandpath>
+					<leftfilenameandpath>~/go/src/github.com/jdiderik/talkkonnect/soundfiles/events/left.wav</leftfilenameandpath>
+					<messagefilenameandpath>~/go/src/github.com/jdiderik/talkkonnect/soundfiles/events/message.wav</messagefilenameandpath>
 				</event>
 				<alert enabled="true">
-					<filenameandpath>/home/talkkonnect/gocode/src/github.com/talkkonnect/talkkonnect/soundfiles/alerts/alert.wav</filenameandpath>
+					<filenameandpath>~/go/src/github.com/jdiderik/talkkonnect/soundfiles/alerts/alert.wav</filenameandpath>
 					<volume>1</volume>
 				</alert>
 				<incommingbeep enabled="false">
-					<filenameandpath>/home/talkkonnect/gocode/src/github.com/talkkonnect/talkkonnect/soundfiles/rogerbeeps/Incoming.wav</filenameandpath>
+					<filenameandpath>~/go/src/github.com/jdiderik/talkkonnect/soundfiles/rogerbeeps/Incoming.wav</filenameandpath>
 					<volume>1</volume>
 				</incommingbeep>
 				<rogerbeep enabled="true">
-					<filenameandpath>/home/talkkonnect/gocode/src/github.com/talkkonnect/talkkonnect/soundfiles/rogerbeeps/Image.wav</filenameandpath>
+					<filenameandpath>~/go/src/github.com/jdiderik/talkkonnect/soundfiles/rogerbeeps/Image.wav</filenameandpath>
 					<volume>1</volume>
 				</rogerbeep>
 				<repeatertone enabled="true">
@@ -115,7 +115,7 @@
                 			<tonedurationsec>1</tonedurationsec>
 				</repeatertone>
 				<stream enabled="true">
-					<filenameandpath>http://prdonline.prd.go.th:8200</filenameandpath>
+					<filenameandpath>http://mycustomdomain.com:8200</filenameandpath>
 					<volume>0.5</volume>
 				</stream>
 			</sounds>
@@ -254,7 +254,7 @@
 				<rx>true</rx>
 			</gps>
 			<panicfunction enabled="false">
-				<filenameandpath>/home/talkkonnect/gocode/src/github.com/talkkonnect/talkkonnect/soundfiles/alerts/alert.wav</filenameandpath>
+				<filenameandpath>~/go/src/github.com/jdiderik/talkkonnect/soundfiles/alerts/alert.wav</filenameandpath>
 				<volume>0.5</volume>
 				<sendident>true</sendident>
 				<panicmessage>Need Help! Now!</panicmessage>

@@ -33,7 +33,7 @@ import (
 	"bufio"
 	"bytes"
 	"fmt"
-	"github.com/talkkonnect/volume-go"
+	"github.com/jdiderik/volume-go"
 	"log"
 	"runtime"
 	"strconv"

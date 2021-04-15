@@ -32,10 +32,10 @@ package talkkonnect
 import (
 	"encoding/xml"
 	"fmt"
-	goled "github.com/talkkonnect/go-oled-i2c"
-	"github.com/talkkonnect/go-openal/openal"
-	"github.com/talkkonnect/gpio"
-	"github.com/talkkonnect/gumble/gumbleffmpeg"
+	goled "github.com/jdiderik/go-oled-i2c"
+	"github.com/jdiderik/go-openal/openal"
+	"github.com/jdiderik/gpio"
+	"github.com/jdiderik/gumble/gumbleffmpeg"
 	"golang.org/x/sys/unix"
 	"io"
 	"io/ioutil"
@@ -50,8 +50,8 @@ import (
 
 //version and release date
 const (
-	talkkonnectVersion  string = "1.62.02"
-	talkkonnectReleased string = "April 04 2021"
+	talkkonnectVersion  string = "1.63.01"
+	talkkonnectReleased string = "April 15 2021"
 )
 
 // Generic Global Variables

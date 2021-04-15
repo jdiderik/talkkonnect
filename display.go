@@ -30,7 +30,7 @@
 package talkkonnect
 
 import (
-	hd44780 "github.com/talkkonnect/go-hd44780"
+	hd44780 "github.com/jdiderik/go-hd44780"
 	"log"
 	"strings"
 	"sync"

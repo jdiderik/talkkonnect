@@ -30,7 +30,7 @@
 package talkkonnect
 
 import (
-	"github.com/talkkonnect/volume-go"
+	"github.com/jdiderik/volume-go"
 	"log"
 	"os"
 	"strconv"

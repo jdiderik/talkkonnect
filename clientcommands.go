@@ -31,11 +31,11 @@ package talkkonnect
 
 import (
 	"fmt"
-	"github.com/talkkonnect/gumble/gumble"
-	"github.com/talkkonnect/gumble/gumbleffmpeg"
-	htgotts "github.com/talkkonnect/htgo-tts"
-	term "github.com/talkkonnect/termbox-go"
-	"github.com/talkkonnect/volume-go"
+	"github.com/jdiderik/gumble/gumble"
+	"github.com/jdiderik/gumble/gumbleffmpeg"
+	htgotts "github.com/jdiderik/htgo-tts"
+	term "github.com/jdiderik/termbox-go"
+	"github.com/jdiderik/volume-go"
 	"log"
 	"net"
 	"os"
