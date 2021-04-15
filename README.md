@@ -1,4 +1,6 @@
-# talKKonnect
+# PERSONAL FORK FOR TEST - talKKonnect
+
+## USE ORIGINAL [repo](https://github.com/talkkonnect/talkkonnect) to be sure you have a working version!
 
 ### A Headless Mumble Client/Transceiver/Walkie Talkie/Intercom/Gateway for Single Board Computers, PCs or Virtual Environments (IP Radio/IP PTT <push-to-talk>)
 
