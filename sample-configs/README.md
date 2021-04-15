@@ -26,27 +26,27 @@
 
 #### For Raspberry Pi 3, 3B+, A Models with HD44780 4x20 LCD with Parallel Interface use the template
 ````
-/home/talkkonnect/gocode/src/github.com/talkkonnect/talkkonnect/sample-configs/talkkonnect-raspberrypi-hd44780-parallel.xml
+~/go/src/github.com/jdiderik/talkkonnect/sample-configs/talkkonnect-raspberrypi-hd44780-parallel.xml
 `````
 
 #### For Raspberry Pi 3, 3B+, A Models with HD44780 4x20 LCD with I2C Interface use the template
 ````
-/home/talkkonnect/gocode/src/github.com/talkkonnect/talkkonnect/sample-configs/talkkonnect-raspberrypi-hd44780-i2c.xml
+~/go/src/github.com/jdiderik/talkkonnect/sample-configs/talkkonnect-raspberrypi-hd44780-i2c.xml
 ````
 
 #### For Raspberry Pi 3, 3B+, A Models with 4Pin IIC I2C OLED Display Module 12864  use the template
 ````
-/home/talkkonnect/gocode/src/github.com/talkkonnect/talkkonnect/sample-configs/talkkonnect-raspberrypi-OLED-i2c.xml
+~/go/src/github.com/jdiderik/talkkonnect/sample-configs/talkkonnect-raspberrypi-OLED-i2c.xml
 ````
 
 #### For PCs/VMs use the template
 ````
-/home/talkkonnect/gocode/src/github.com/talkkonnect/talkkonnect/sample-configs/talkkonnect-pc-nogpio.xml
+~/go/src/github.com/jdiderik/talkkonnect/sample-configs/talkkonnect-pc-nogpio.xml
 ````
 
 #### For OrangePiZero with 4Pin IIC I2C OLED Display Module 12864  use the template
 ````
-/home/talkkonnect/gocode/src/github.com/talkkonnect/talkkonnect/sample-configs/talkkonnect-orangepizero-OLED-i2c.xml
+~/go/src/github.com/jdiderik/talkkonnect/sample-configs/talkkonnect-orangepizero-OLED-i2c.xml
 ````
 
 

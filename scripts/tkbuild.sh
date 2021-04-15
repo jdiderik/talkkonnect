@@ -54,7 +54,7 @@ echo export PATH=$PATH:/usr/local/go/bin >>  ~/.bashrc
 echo export GOPATH=/home/talkkonnect/gocode >>  ~/.bashrc
 echo export GOBIN=/home/talkkonnect/bin >>  ~/.bashrc
 echo export GO111MODULE="auto" >>  ~/.bashrc
-echo "alias tk='cd /home/talkkonnect/gocode/src/github.com/talkkonnect/talkkonnect/'" >>  ~/.bashrc
+echo "alias tk='cd ~/go/src/github.com/jdiderik/talkkonnect/'" >>  ~/.bashrc
 
 
 ## Set up GOENVIRONMENT
@@ -64,17 +64,17 @@ export GOBIN=/home/talkkonnect/bin
 export GO111MODULE="auto"
 
 ## Get the latest source code of talkkonnect from githu.com
-go get -v github.com/talkkonnect/talkkonnect
+go get -v github.com/jdiderik/talkkonnect
 
 ## Build talkkonnect as binary
-cd $GOPATH/src/github.com/talkkonnect/talkkonnect
+cd $GOPATH/src/github.com/jdiderik/talkkonnect
 /usr/local/go/bin/go build -o /home/talkkonnect/bin/talkkonnect cmd/talkkonnect/main.go
 
 ## Notify User
 echo "=> Finished building TalKKonnect"
 echo "=> talkkonnect binary is in /home/talkkonect/bin"
 echo "=> Now enter Mumble server connectivity details"
-echo "talkkonnect.xml from $GOPATH/src/github.com/talkkonnect/talkkonnect"
+echo "talkkonnect.xml from $GOPATH/src/github.com/jdiderik/talkkonnect"
 echo "and configure talkkonnect features. Happy talkkonnecting!!"
 
 exit

@@ -47,7 +47,7 @@ var serverindex = flag.String("serverindex", "0", "jump to server index [n]")
 
 func main() {
 
-	config := flag.String("config", "/home/talkkonnect/gocode/src/github.com/talkkonnect/talkkonnect/talkkonnect.xml", "full path to talkkonnect.xml configuration file")
+	config := flag.String("config", "~/go/src/github.com/jdiderik/talkkonnect/talkkonnect.xml", "full path to talkkonnect.xml configuration file")
 
 	flag.Usage = talkkonnectusage
 	flag.Parse()
@@ -87,7 +87,7 @@ func talkkonnectusage() {
 	fmt.Println("By Suvir Kumar <suvir@talkkonnect.com>")
 	fmt.Println("For more information visit http://www.talkkonnect.com and github.com/talkkonnect")
 	fmt.Println("---------------------------------------------------------------------------------------")
-	fmt.Println("-config=/home/talkkonnect/gocode/src/github.com/talkkonnect/talkkonnect/talkkonnect.xml")
+	fmt.Println("-config=~/go/src/github.com/jdiderik/talkkonnect/talkkonnect.xml")
 	fmt.Println("-serverindex=[n] for the index of the enabled server to connect to in XML file")
 	fmt.Println("-version for the version")
 	fmt.Println("-help for this screen")

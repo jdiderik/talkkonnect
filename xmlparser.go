@@ -801,7 +801,7 @@ func readxmlconfig(file string) error {
 	//Check for soundfiles directory in various locations
 	// First, check env for $GOPATH and check in the hardcoded talkkonnect/talkkonnect dir
 	if os.Getenv("GOPATH") != "" {
-		defaultRepo := os.Getenv("GOPATH") + "/src/github.com/talkkonnect/talkkonnect"
+		defaultRepo := os.Getenv("GOPATH") + "/src/github.com/jdiderik/talkkonnect"
 		if stat, err := os.Stat(defaultRepo); err == nil && stat.IsDir() {
 			defaultSharePath = defaultRepo
 		}

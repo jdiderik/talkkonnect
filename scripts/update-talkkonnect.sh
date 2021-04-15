@@ -49,10 +49,10 @@ then
 	rm /home/talkkonnect/bin/talkkonnect
 fi
 
-if [[ -f "/home/talkkonnect/gocode/src/github.com/talkkonnect/talkkonnect/talkkonnect.xml" ]]
+if [[ -f "~/go/src/github.com/jdiderik/talkkonnect/talkkonnect.xml" ]]
 then
 	echo "copying talkkonnect.xml for safe keeping to /root/talkkonnect.xml"
-	cp /home/talkkonnect/gocode/src/github.com/talkkonnect/talkkonnect/talkkonnect.xml /root/
+	cp ~/go/src/github.com/jdiderik/talkkonnect/talkkonnect.xml /root/
 fi
 
 rm -rf /home/talkkonnect/gocode/src/github.old
@@ -73,17 +73,17 @@ export GOBIN=/home/talkkonnect/bin
 export GO111MODULE="auto"
 
 ## Get the latest source code of talkkonnect from githu.com
-go get -v github.com/talkkonnect/talkkonnect
+go get -v github.com/jdiderik/talkkonnect
 
 ## Build talkkonnect as binary
-cd $GOPATH/src/github.com/talkkonnect/talkkonnect
+cd $GOPATH/src/github.com/jdiderik/talkkonnect
 go build -o /home/talkkonnect/bin/talkkonnect cmd/talkkonnect/main.go
 
 if [[ -f "/home/talkkonnect/gocode/src/github.old/talkkonnect/talkkonnect/talkkonnect.xml" ]]
 then
-	echo "copying original talkkonnect.xml back to /home/talkkonnect/gocode/src/github.com/talkkonnect/talkkonnect/talkkonnect.xml"
-	rm /home/talkkonnect/gocode/src/github.com/talkkonnect/talkkonnect/talkkonnect.xml
-	cp /home/talkkonnect/gocode/src/github.old/talkkonnect/talkkonnect/talkkonnect.xml  /home/talkkonnect/gocode/src/github.com/talkkonnect/talkkonnect/talkkonnect.xml
+	echo "copying original talkkonnect.xml back to ~/go/src/github.com/jdiderik/talkkonnect/talkkonnect.xml"
+	rm ~/go/src/github.com/jdiderik/talkkonnect/talkkonnect.xml
+	cp /home/talkkonnect/gocode/src/github.old/talkkonnect/talkkonnect/talkkonnect.xml  ~/go/src/github.com/jdiderik/talkkonnect/talkkonnect.xml
 fi
 
 
@@ -99,7 +99,7 @@ fi
 ## Notify User
 echo "=> Finished Updating TalKKonnect"
 echo "=> Updated talkkonnect binary is in /home/talkkonect/bin"
-echo "copied old talkkonnect.xml file and replaced in /home/talkkonnect/gocode/src/github.com/talkkonnect/talkkonnect/"
+echo "copied old talkkonnect.xml file and replaced in ~/go/src/github.com/jdiderik/talkkonnect/"
 echo "Happy talkkonnecting!!"
 
 exit

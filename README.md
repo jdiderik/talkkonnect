@@ -1,6 +1,6 @@
 # PERSONAL FORK FOR TEST - talKKonnect
 
-## USE ORIGINAL [repo](https://github.com/talkkonnect/talkkonnect) to be sure you have a working version!
+## USE ORIGINAL [repo](https://github.com/jdiderik/talkkonnect) to be sure you have a working version!
 
 ### A Headless Mumble Client/Transceiver/Walkie Talkie/Intercom/Gateway for Single Board Computers, PCs or Virtual Environments (IP Radio/IP PTT <push-to-talk>)
 
@@ -181,7 +181,7 @@ As root user Get the link and use wget to download the binary to your talkkonnec
 
 ` export GO111MODULE="auto" `
 
-` alias tk='cd /home/talkkonnect/gocode/src/github.com/talkkonnect/talkkonnect/' `
+` alias tk='cd ~/go/src/github.com/jdiderik/talkkonnect/' `
 
 Then log out and log in as root again and check if go in installed properly
 
@@ -212,13 +212,13 @@ export GOBIN=/home/talkkonnect/bin
 
 ````
 cd $GOPATH 
-go get -v github.com/talkkonnect/talkkonnect 
-cd $GOPATH/src/github.com/talkkonnect/talkkonnect
+go get -v github.com/jdiderik/talkkonnect 
+cd $GOPATH/src/github.com/jdiderik/talkkonnect
 ````
 
 ##### Before building the binary, confirm all features which you want enabled, the GPIO pins used and talKKonnect program configuration by editing file: ##### 
 
-` /home/talkkonnect/gocode/src/github.com/talkkonnect/talkkonnect/talkkonnect.xml`
+` ~/go/src/github.com/jdiderik/talkkonnect/talkkonnect.xml`
 
 ##### Build talKKonnect and test connection to your Mumble server. #####
 
@@ -463,7 +463,7 @@ For a speaker muting to work when pressing a PTT, you need to enter the exact na
 * The autoprovisioning tag when set to true or false turns on and off the autoprovisioning function respectively
 * The tkid tag is used to set the autoprovisioning filename (xxxx.xml) that talkkonnect will request from the autoprovisioing web server 
 * The URL tag is used to define the url of the autoprovisioning webserver that hosts the configuration XML file 
-* The savefileandpath tag are used to define the name and where the http fetched xml file will be stored locally. This is usually /home/talkkonnect/gocode/src/github.com/talkkonnect/talkkonnect/talkkonnect.xml
+* The savefileandpath tag are used to define the name and where the http fetched xml file will be stored locally. This is usually ~/go/src/github.com/jdiderik/talkkonnect/talkkonnect.xml
 
 ##### Beacon Section
 * The beacon function was created to emulate a radio repeater beacon that will play certain wav files at defined periods to notify all users on a particular channel that the repeater is online nad functioning 
