@@ -34,14 +34,14 @@ import (
 	"crypto/tls"
 	"fmt"
 	"github.com/comail/colog"
-	hd44780 "github.com/jdiderik/go-hd44780"
-	"github.com/jdiderik/gpio"
+	// hd44780 "github.com/jdiderik/go-hd44780"
+	// "github.com/jdiderik/gpio"
 	"github.com/jdiderik/gumble/gumble"
 	"github.com/jdiderik/gumble/gumbleffmpeg"
 	"github.com/jdiderik/gumble/gumbleutil"
 	_ "github.com/jdiderik/gumble/opus"
 	term "github.com/jdiderik/termbox-go"
-	"github.com/jdiderik/volume-go"
+	// "github.com/jdiderik/volume-go"
 	"io"
 	"log"
 	"net/http"
@@ -89,27 +89,13 @@ type Talkkonnect struct {
 	Daemonize          bool
 	IsTransmitting     bool
 	IsPlayStream       bool
-	GPIOEnabled        bool
-	OnlineLED          gpio.Pin
-	ParticipantsLED    gpio.Pin
-	TransmitLED        gpio.Pin
-	HeartBeatLED       gpio.Pin
-	BackLightLED       gpio.Pin
-	VoiceActivityLED   gpio.Pin
-	AttentionLED       gpio.Pin
-	TxButton           gpio.Pin
+	GPIOEnabled        bool = false
 	TxButtonState      uint
-	TxToggle           gpio.Pin
 	TxToggleState      uint
-	UpButton           gpio.Pin
 	UpButtonState      uint
-	DownButton         gpio.Pin
 	DownButtonState    uint
-	PanicButton        gpio.Pin
 	PanicButtonState   uint
-	CommentButton      gpio.Pin
 	CommentButtonState uint
-	StreamButton       gpio.Pin
 	StreamButtonState  uint
 }
 
@@ -263,12 +249,6 @@ func (b *Talkkonnect) ClientStart() {
 		FatalCleanUp("Problem Opening talkkonnect.log file " + err.Error())
 	}
 
-	if TargetBoard == "rpi" {
-		if !LedStripEnabled {
-			b.LEDOffAll()
-		}
-	}
-
 	if Logging == "screenandfile" {
 		log.Println("info: Logging is set to: ", Logging)
 		wrt := io.MultiWriter(os.Stdout, f)
@@ -288,168 +268,11 @@ func (b *Talkkonnect) ClientStart() {
 
 	log.Printf("info: [%d] Default Mumble Accounts Found in XML config\n", AccountCount)
 
-	if TargetBoard == "rpi" {
-		log.Println("info: Target Board Set as RPI (gpio enabled) ")
-		b.initGPIO()
-		if LedStripEnabled {
-			MyLedStrip, _ = NewLedStrip()
-			log.Printf("info: Led Strip %v %s\n", MyLedStrip.buf, MyLedStrip.display)
-		}
-	} else {
-		log.Println("info: Target Board Set as PC (gpio disabled) ")
-	}
-
-	if (TargetBoard == "rpi" && LCDBackLightTimerEnabled == true) && (OLEDEnabled == true || LCDEnabled == true) {
-
-		log.Println("info: Backlight Timer Enabled by Config")
-		BackLightTime = *BackLightTimePtr
-		BackLightTime = time.NewTicker(LCDBackLightTimeoutSecs * time.Second)
-
-		go func() {
-			for {
-				<-BackLightTime.C
-				log.Printf("debug: LCD Backlight Ticker Timed Out After %d Seconds", LCDBackLightTimeoutSecs)
-				LCDIsDark = true
-				if LCDInterfaceType == "parallel" {
-					b.LEDOff(b.BackLightLED)
-				}
-				if LCDInterfaceType == "i2c" {
-					lcd := hd44780.NewI2C4bit(LCDI2CAddress)
-					if err := lcd.Open(); err != nil {
-						log.Println("error: Can't open lcd: " + err.Error())
-						return
-					}
-					lcd.ToggleBacklight()
-				}
-				if OLEDEnabled == true && OLEDInterfacetype == "i2c" {
-					Oled.DisplayOff()
-					LCDIsDark = true
-				}
-			}
-		}()
-	} else {
-		log.Println("debug: Backlight Timer Disabled by Config")
-	}
-
 	talkkonnectBanner("\u001b[44;1m") // add blue background to banner reference https://www.lihaoyi.com/post/BuildyourownCommandLinewithANSIescapecodes.html#background-colors
-
-	err = volume.Unmute(OutputDevice)
-
-	if err != nil {
-		log.Println("error: Unable to Unmute ", err)
-	} else {
-		log.Println("debug: Speaker UnMuted Before Connect to Server")
-	}
-
-	if TTSEnabled && TTSTalkkonnectLoaded {
-		err := playWavLocal(TTSTalkkonnectLoadedFilenameAndPath, TTSVolumeLevel)
-		if err != nil {
-			log.Println("error: PlayWavLocal(TTSTalkkonnectLoadedFilenameAndPath) Returned Error: ", err)
-		}
-	}
 
 	b.Connect()
 
 	pstream = gumbleffmpeg.New(b.Client, gumbleffmpeg.SourceFile(""), 0)
-
-	if (HeartBeatEnabled) && (TargetBoard == "rpi") {
-		HeartBeat := time.NewTicker(time.Duration(PeriodmSecs) * time.Millisecond)
-
-		go func() {
-			for range HeartBeat.C {
-				timer1 := time.NewTimer(time.Duration(LEDOnmSecs) * time.Millisecond)
-				timer2 := time.NewTimer(time.Duration(LEDOffmSecs) * time.Millisecond)
-				<-timer1.C
-				if HeartBeatEnabled {
-					b.LEDOn(b.HeartBeatLED)
-				}
-				<-timer2.C
-				if HeartBeatEnabled {
-					b.LEDOff(b.HeartBeatLED)
-				}
-				if KillHeartBeat == true {
-					HeartBeat.Stop()
-				}
-
-			}
-		}()
-	}
-
-	if BeaconEnabled {
-		BeaconTicker := time.NewTicker(time.Duration(BeaconTimerSecs) * time.Second)
-
-		go func() {
-			for range BeaconTicker.C {
-				IsPlayStream = true
-				b.playIntoStream(BeaconFilenameAndPath, BVolume)
-				IsPlayStream = false
-				log.Println("info: Beacon Enabled and Timed Out Auto Played File ", BeaconFilenameAndPath, " Into Stream")
-			}
-		}()
-	}
-
-	b.BackLightTimer()
-
-	if LCDEnabled == true {
-		b.LEDOn(b.BackLightLED)
-		LCDIsDark = false
-	}
-
-	if OLEDEnabled == true {
-		Oled.DisplayOn()
-		LCDIsDark = false
-	}
-
-	if AudioRecordEnabled == true {
-
-		if AudioRecordOnStart == true {
-
-			if AudioRecordMode != "" {
-
-				if AudioRecordMode == "traffic" {
-					log.Println("info: Incoming Traffic will be Recorded with sox")
-					AudioRecordTraffic()
-					if TargetBoard == "rpi" {
-						if LCDEnabled == true {
-							LcdText = [4]string{"nil", "nil", "nil", "Traffic Recording ->"} // 4
-							LcdDisplay(LcdText, LCDRSPin, LCDEPin, LCDD4Pin, LCDD5Pin, LCDD6Pin, LCDD7Pin, LCDInterfaceType, LCDI2CAddress)
-						}
-						if OLEDEnabled == true {
-							oledDisplay(false, 6, 1, "Traffic Recording") // 6
-						}
-					}
-				}
-				if AudioRecordMode == "ambient" {
-					log.Println("info: Ambient Audio from Mic will be Recorded with sox")
-					AudioRecordAmbient()
-					if TargetBoard == "rpi" {
-						if LCDEnabled == true {
-							LcdText = [4]string{"nil", "nil", "nil", "Mic Recording ->"} // 4
-							LcdDisplay(LcdText, LCDRSPin, LCDEPin, LCDD4Pin, LCDD5Pin, LCDD6Pin, LCDD7Pin, LCDInterfaceType, LCDI2CAddress)
-						}
-						if OLEDEnabled == true {
-							oledDisplay(false, 6, 1, "Mic Recording") // 6
-						}
-					}
-				}
-				if AudioRecordMode == "combo" {
-					log.Println("info: Both Incoming Traffic and Ambient Audio from Mic will be Recorded with sox")
-					AudioRecordCombo()
-					if TargetBoard == "rpi" {
-						if LCDEnabled == true {
-							LcdText = [4]string{"nil", "nil", "nil", "Combo Recording ->"} // 4
-							LcdDisplay(LcdText, LCDRSPin, LCDEPin, LCDD4Pin, LCDD5Pin, LCDD6Pin, LCDD7Pin, LCDInterfaceType, LCDI2CAddress)
-						}
-						if OLEDEnabled == true {
-							oledDisplay(false, 6, 1, "Combo Recording") //6
-						}
-					}
-				}
-
-			}
-
-		}
-	}
 
 keyPressListenerLoop:
 	for {
@@ -466,14 +289,14 @@ keyPressListenerLoop:
 				b.cmdChannelUp()
 			case term.KeyF2:
 				b.cmdChannelDown()
-			case term.KeyF3:
-				b.cmdMuteUnmute("toggle")
-			case term.KeyF4:
-				b.cmdCurrentVolume()
-			case term.KeyF5:
-				b.cmdVolumeUp()
-			case term.KeyF6:
-				b.cmdVolumeDown()
+			// case term.KeyF3:
+			// 	b.cmdMuteUnmute("toggle")
+			// case term.KeyF4:
+			// 	b.cmdCurrentVolume()
+			// case term.KeyF5:
+			// 	b.cmdVolumeUp()
+			// case term.KeyF6:
+			// 	b.cmdVolumeDown()
 			case term.KeyF7:
 				b.cmdListServerChannels()
 			case term.KeyF8:
@@ -484,45 +307,45 @@ keyPressListenerLoop:
 				b.cmdListOnlineUsers()
 			case term.KeyF11:
 				b.cmdPlayback()
-			case term.KeyF12:
-				b.cmdGPSPosition()
+			// case term.KeyF12:
+			// 	b.cmdGPSPosition()
 			case term.KeyCtrlC:
 				talkkonnectAcknowledgements("\u001b[44;1m") // add blue background to banner reference https://www.lihaoyi.com/post/BuildyourownCommandLinewithANSIescapecodes.html#background-colors
 				b.cmdQuitTalkkonnect()
-			case term.KeyCtrlD:
-				b.cmdDebugStacktrace()
-			case term.KeyCtrlE:
-				b.cmdSendEmail()
-			case term.KeyCtrlF:
-				b.cmdConnPreviousServer()
-			case term.KeyCtrlI: // New. Audio Recording. Traffic
-				b.cmdAudioTrafficRecord()
-			case term.KeyCtrlJ: // New. Audio Recording. Mic
-				b.cmdAudioMicRecord()
-			case term.KeyCtrlK: // New/ Audio Recording. Combo
-				b.cmdAudioMicTrafficRecord()
+			// case term.KeyCtrlD:
+			// 	b.cmdDebugStacktrace()
+			// case term.KeyCtrlE:
+			// 	b.cmdSendEmail()
+			// case term.KeyCtrlF:
+			// 	b.cmdConnPreviousServer()
+			// case term.KeyCtrlI: // New. Audio Recording. Traffic
+			// 	b.cmdAudioTrafficRecord()
+			// case term.KeyCtrlJ: // New. Audio Recording. Mic
+			// 	b.cmdAudioMicRecord()
+			// case term.KeyCtrlK: // New/ Audio Recording. Combo
+			// 	b.cmdAudioMicTrafficRecord()
 			case term.KeyCtrlL:
 				b.cmdClearScreen()
 			case term.KeyCtrlO:
 				b.cmdPingServers()
-			case term.KeyCtrlN:
-				b.cmdConnNextServer()
-			case term.KeyCtrlP:
-				b.cmdPanicSimulation()
-			case term.KeyCtrlG:
-				b.cmdPlayRepeaterTone()
-			case term.KeyCtrlR:
-				b.cmdRepeatTxLoop()
-			case term.KeyCtrlS:
-				b.cmdScanChannels()
-			case term.KeyCtrlT:
-				b.cmdThanks()
-			case term.KeyCtrlV:
-				b.cmdShowUptime()
-			case term.KeyCtrlU:
-				b.cmdDisplayVersion()
-			case term.KeyCtrlX:
-				b.cmdDumpXMLConfig()
+			// case term.KeyCtrlN:
+			// 	b.cmdConnNextServer()
+			// case term.KeyCtrlP:
+			// 	b.cmdPanicSimulation()
+			// case term.KeyCtrlG:
+			// 	b.cmdPlayRepeaterTone()
+			// case term.KeyCtrlR:
+			// 	b.cmdRepeatTxLoop()
+			// case term.KeyCtrlS:
+			// 	b.cmdScanChannels()
+			// case term.KeyCtrlT:
+			// 	b.cmdThanks()
+			// case term.KeyCtrlV:
+			// 	b.cmdShowUptime()
+			// case term.KeyCtrlU:
+			// 	b.cmdDisplayVersion()
+			// case term.KeyCtrlX:
+			// 	b.cmdDumpXMLConfig()
 			default:
 				if ev.Ch != 0 {
 					log.Println("error: Invalid Keypress ASCII ", ev.Ch, "Press <DEL> for Menu")

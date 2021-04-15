@@ -31,67 +31,6 @@
 				<savefilepath>~/go/src/github.com/jdiderik/talkkonnect</savefilepath>
 				<savefilename>talkkonnect.xml</savefilename>
 			</autoprovisioning>
-			<beacon enabled="false">
-				<beacontimersecs>10</beacontimersecs>
-				<beaconfileandpath>~/go/src/github.com/jdiderik/talkkonnect/soundfiles/voiceprompts/Beacon.wav</beaconfileandpath>
-				<volume>1</volume>
-			</beacon>
-			<tts enabled="false">
-				<volumelevel>70</volumelevel>
-				<participants>false</participants>
-				<channelup>true</channelup>
-				<channelupfilenameandpath>~/go/src/github.com/jdiderik/talkkonnect/soundfiles/voiceprompts/ChannelUp.wav</channelupfilenameandpath>
-				<channeldown>true</channeldown>
-				<channeldownfilenameandpath>~/go/src/github.com/jdiderik/talkkonnect/soundfiles/voiceprompts/ChannelDown.wav</channeldownfilenameandpath>
-				<muteunmutespeaker>true</muteunmutespeaker>
-				<muteunmutespeakerfilenameandpath>~/go/src/github.com/jdiderik/talkkonnect/soundfiles/voiceprompts/MuteUnMuteSpeaker.wav</muteunmutespeakerfilenameandpath>
-				<currentvolumelevel>true</currentvolumelevel>
-				<currentvolumelevelfilenameandpath>~/go/src/github.com/jdiderik/talkkonnect/soundfiles/voiceprompts/CurrentVolumeLevel.wav</currentvolumelevelfilenameandpath>
-				<digitalvolumeup>true</digitalvolumeup>
-				<digitalvolumeupfilenameandpath>~/go/src/github.com/jdiderik/talkkonnect/soundfiles/voiceprompts/DigitalVolumeUp.wav</digitalvolumeupfilenameandpath>
-				<digitalvolumedown>true</digitalvolumedown>
-				<digitalvolumedownfilenameandpath>~/go/src/github.com/jdiderik/talkkonnect/soundfiles/voiceprompts/DigitalVolumeDown.wav</digitalvolumedownfilenameandpath>
-				<listserverchannels>true</listserverchannels>
-				<listserverchannelsfilenameandpath>~/go/src/github.com/jdiderik/talkkonnect/soundfiles/voiceprompts/ListServerChannels.wav</listserverchannelsfilenameandpath>
-				<starttransmitting>true</starttransmitting>
-				<starttransmittingfilenameandpath>~/go/src/github.com/jdiderik/talkkonnect/soundfiles/voiceprompts/StartTransmitting.wav</starttransmittingfilenameandpath>
-				<stoptransmitting>true</stoptransmitting>
-				<stoptransmittingfilenameandpath>~/go/src/github.com/jdiderik/talkkonnect/soundfiles/voiceprompts/StopTransmitting.wav</stoptransmittingfilenameandpath>
-				<listonlineusers>true</listonlineusers>
-				<listonlineusersfilenameandpath>~/go/src/github.com/jdiderik/talkkonnect/soundfiles/voiceprompts/ListOnlineUsers.wav</listonlineusersfilenameandpath>
-				<playstream>true</playstream>
-				<playstreamfilenameandpath>~/go/src/github.com/jdiderik/talkkonnect/soundfiles/voiceprompts/PlayStream.wav</playstreamfilenameandpath>
-				<requestgpsposition>true</requestgpsposition>
-				<requestgpspositionfilenameandpath>~/go/src/github.com/jdiderik/talkkonnect/soundfiles/voiceprompts/RequestGpsPosition.wav</requestgpspositionfilenameandpath>
-				<nextserver>false</nextserver>
-				<nextserverfilenameandpath></nextserverfilenameandpath>
-				<previousserver>false</previousserver>
-				<previousserverfilenameandpath></previousserverfilenameandpath>
-				<panicsimulation>true</panicsimulation>
-				<panicsimulationfilenameandpath>~/go/src/github.com/jdiderik/talkkonnect/soundfiles/voiceprompts/PanicSimulation.wav</panicsimulationfilenameandpath>
-				<printxmlconfig>true</printxmlconfig>
-				<printxmlconfigfilenameandpath>~/go/src/github.com/jdiderik/talkkonnect/soundfiles/voiceprompts/PrintXmlConfig.wav</printxmlconfigfilenameandpath>
-				<sendemail>true</sendemail>
-				<sendemailfilenameandpath>~/go/src/github.com/jdiderik/talkkonnect/soundfiles/voiceprompts/SendEmail.wav</sendemailfilenameandpath>
-				<displaymenu>true</displaymenu>
-				<displaymenufilenameandpath>~/go/src/github.com/jdiderik/talkkonnect/soundfiles/voiceprompts/DisplayMenu.wav</displaymenufilenameandpath>
-				<quittalkkonnect>true</quittalkkonnect>
-				<quittalkkonnectfilenameandpath>~/go/src/github.com/jdiderik/talkkonnect/soundfiles/voiceprompts/QuitTalkkonnect.wav</quittalkkonnectfilenameandpath>
-				<talkkonnectloaded>true</talkkonnectloaded>
-				<talkkonnectloadedfilenameandpath>~/go/src/github.com/jdiderik/talkkonnect/soundfiles/voiceprompts/Loaded.wav</talkkonnectloadedfilenameandpath>
-				<pingservers>true</pingservers>
-				<pingserversfilenameandpath></pingserversfilenameandpath>
-			</tts>
-			<smtp enabled="false">
-				<username>robot@email.com</username>
-				<password>user</password>
-				<receiver>someone@somedomain.com</receiver>
-				<subject>Talkkonnect Email Message with GPS</subject>
-				<message>Hello From AML</message>
-				<gpsdatetime>true</gpsdatetime>
-				<gpslatlong>true</gpslatlong>
-				<googlemapsurl>true</googlemapsurl>
-			</smtp>
 			<sounds>
 				<event enabled="true">
 					<joinedfilenameandpath>~/go/src/github.com/jdiderik/talkkonnect/soundfiles/events/event.wav</joinedfilenameandpath>
@@ -148,28 +87,6 @@
 				<sendemail>true</sendemail>
 				<pingservers>true</pingservers>
 			</api>
-			<printvariables>
-				<printaccount>false</printaccount>
-				<printlogging>false</printlogging>
-				<printprovisioning>false</printprovisioning>
-				<printbeacon>false</printbeacon>
-				<printtts>false</printtts>
-				<printsmtp>false</printsmtp>
-				<printsounds>true</printsounds>
-				<printtxtimeout>false</printtxtimeout>
-				<printhttpapi>false</printhttpapi>
-				<printtargetboard>false</printtargetboard>
-				<printleds>true</printleds>
-				<printheartbeat>false</printheartbeat>
-				<printbuttons>false</printbuttons>
-				<printcomment>false</printcomment>
-				<printlcd>true</printlcd>
-				<printoled>false</printoled>
-				<printgps>false</printgps>
-				<printpanic>false</printpanic>
-				<printaudiorecord>false</printaudiorecord>
-				<printmqtt>false</printmqtt>
-			</printvariables>
 			<mqtt enabled="false">
 				<mqtttopic>thailand/bangkok/company/talkkonnect</mqtttopic>
 				<mqttbroker>tcp://mqtt.test.com:1883</mqttbroker>
@@ -185,99 +102,6 @@
 			</mqtt>
 		</software>
 		<hardware targetboard="rpi">
-			<lights>
-				<ledstripenabled>false</ledstripenabled>
-				<voiceactivityledpin>5</voiceactivityledpin>
-				<participantsledpin>6</participantsledpin>
-				<transmitledpin>16</transmitledpin>
-				<onlineledpin>1</onlineledpin>
-				<attentionledpin>25</attentionledpin>
-			</lights>
-			<heartbeat enabled="false">
-				<heartbeatledpin>25</heartbeatledpin>
-				<periodmsecs>2000</periodmsecs>
-				<ledonmsecs>1000</ledonmsecs>
-				<ledoffmsecs>1010</ledoffmsecs>
-			</heartbeat>
-			<buttons>
-				<txbuttonpin>17</txbuttonpin>
-				<txtogglepin></txtogglepin>
-				<upbuttonpin></upbuttonpin>
-				<downbuttonpin></downbuttonpin>
-				<panicbuttonpin></panicbuttonpin>
-				<streambuttonpin></streambuttonpin>
-			</buttons>
-			<comment>
-				<commentbuttonpin>5</commentbuttonpin>
-				<commentmessageoff>Standby</commentmessageoff>
-				<commentmessageon>Unavailable</commentmessageon>
-			</comment>
-			<lcd enabled="false">
-				<lcdinterfacetype>parallel</lcdinterfacetype>
-				<lcdi2caddress>63</lcdi2caddress>
-				<lcdbacklighttimerenabled>false</lcdbacklighttimerenabled>
-				<lcdbacklighttimeoutsecs>30</lcdbacklighttimeoutsecs>
-				<lcdbacklightpin>6</lcdbacklightpin>
-				<lcdrspin>7</lcdrspin>
-				<lcdepin>8</lcdepin>
-				<lcdd4pin>25</lcdd4pin>
-				<lcdd5pin>24</lcdd5pin>
-				<lcdd6pin>23</lcdd6pin>
-				<lcdd7pin>18</lcdd7pin>
-			</lcd>
-			<oled enabled="false">
-				<oledinterfacetype>i2c</oledinterfacetype>
-				<oleddisplayrows>6</oleddisplayrows>
-				<oleddisplaycolumns>21</oleddisplaycolumns>
-				<oleddefaulti2cbus>1</oleddefaulti2cbus>
-				<oleddefaulti2caddress>60</oleddefaulti2caddress>
-				<oledscreenwidth>128</oledscreenwidth>
-				<oledscreenheight>64</oledscreenheight>
-				<oledcommandcolumnaddressing>33</oledcommandcolumnaddressing>
-				<oledaddressbasepagestart>176</oledaddressbasepagestart>
-				<oledcharlength>9</oledcharlength>
-				<oledstartcolumn>0</oledstartcolumn>
-			</oled>
-			<gps enabled="false">
-				<port>/dev/ttyACM0</port>
-				<baud>115200</baud>
-				<txdata></txdata>
-				<even>false</even>
-				<odd>false</odd>
-				<rs485>false</rs485>
-				<rs485highduringsend>false</rs485highduringsend>
-				<rs485highaftersend>false</rs485highaftersend>
-				<stopbits>1</stopbits>
-				<databits>8</databits>
-				<chartimeout>100</chartimeout>
-				<minread>0</minread>
-				<rx>true</rx>
-			</gps>
-			<panicfunction enabled="false">
-				<filenameandpath>~/go/src/github.com/jdiderik/talkkonnect/soundfiles/alerts/alert.wav</filenameandpath>
-				<volume>0.5</volume>
-				<sendident>true</sendident>
-				<panicmessage>Need Help! Now!</panicmessage>
-				<recursivesendmessage>false</recursivesendmessage>
-				<sendgpslocation>true</sendgpslocation>
-				<txlockenabled>true</txlockenabled>
-				<txlocktimeoutsecs>30</txlocktimeoutsecs>
-			</panicfunction>
-			<audiorecordfunction enabled="false">
-				<recordonstart>false</recordonstart>
-				<recordsystem></recordsystem>
-				<recordmode></recordmode>
-				<recordtimeout>0</recordtimeout>
-				<recordfromoutput></recordfromoutput>
-				<recordfrominput></recordfrominput>
-				<recordmictimeout>0</recordmictimeout>
-				<recordsoft></recordsoft>
-				<recordsavepath></recordsavepath>
-				<recordarchivepath></recordarchivepath>
-				<recordprofile></recordprofile>
-				<recordfileformat></recordfileformat>
-				<recordchunksize></recordchunksize>
-			</audiorecordfunction>
 		</hardware>
 	</global>
 </document>

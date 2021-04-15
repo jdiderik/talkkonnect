@@ -33,9 +33,7 @@ import (
 	"fmt"
 	"github.com/jdiderik/gumble/gumble"
 	"github.com/jdiderik/gumble/gumbleffmpeg"
-	htgotts "github.com/jdiderik/htgo-tts"
 	term "github.com/jdiderik/termbox-go"
-	"github.com/jdiderik/volume-go"
 	"log"
 	"net"
 	"os"
@@ -52,27 +50,6 @@ func FatalCleanUp(message string) {
 }
 
 func (b *Talkkonnect) CleanUp() {
-
-	if TargetBoard == "rpi" {
-		t := time.Now()
-		if LCDEnabled == true {
-			LcdText = [4]string{"talkkonnect stopped", t.Format("02-01-2006 15:04:05"), "Please Visit", "www.talkkonnect.com"}
-			LcdDisplay(LcdText, LCDRSPin, LCDEPin, LCDD4Pin, LCDD5Pin, LCDD6Pin, LCDD7Pin, LCDInterfaceType, LCDI2CAddress)
-		}
-		if OLEDEnabled == true {
-			Oled.DisplayOn()
-			LCDIsDark = false
-			oledDisplay(true, 0, 1, "talkkonnect stopped")
-			oledDisplay(false, 1, 1, t.Format("02-01-2006 15:04:05"))
-			oledDisplay(false, 6, 1, "Please Visit")
-			oledDisplay(false, 7, 1, "www.talkkonnect.com")
-		}
-		if !LedStripEnabled {
-			b.LEDOffAll()
-		} else {
-			MyLedStripLEDOffAll()
-		}
-	}
 
 	term.Close()
 	fmt.Println("SIGHUP Termination of Program Requested by User...shutting down talkkonnect")
@@ -116,15 +93,6 @@ func (b *Talkkonnect) ReConnect() {
 			b.Connect()
 		}
 	} else {
-		if TargetBoard == "rpi" {
-			if LCDEnabled == true {
-				LcdText = [4]string{"Failed to Connect!", "nil", "nil", "nil"}
-				LcdDisplay(LcdText, LCDRSPin, LCDEPin, LCDD4Pin, LCDD5Pin, LCDD6Pin, LCDD7Pin, LCDInterfaceType, LCDI2CAddress)
-			}
-			if OLEDEnabled == true {
-				oledDisplay(false, 2, 1, "Failed to Connect!")
-			}
-		}
 		FatalCleanUp("Unable to Connect to mumble server, Giving Up!")
 	}
 }
@@ -134,44 +102,13 @@ func (b *Talkkonnect) TransmitStart() {
 		return
 	}
 
-	b.BackLightTimer()
 	t := time.Now()
-
-	if SimplexWithMute {
-		err := volume.Mute(OutputDevice)
-		if err != nil {
-			log.Println("error: Unable to Mute ", err)
-		} else {
-			log.Println("info: Speaker Muted ")
-		}
-	}
 
 	if IsPlayStream {
 		IsPlayStream = false
 		NowStreaming = false
 		time.Sleep(100 * time.Millisecond)
 		b.playIntoStream(StreamSoundFilenameAndPath, StreamSoundVolume)
-	}
-
-	if TargetBoard == "rpi" {
-		if !LedStripEnabled {
-			b.LEDOn(b.TransmitLED)
-		} else {
-			MyLedStripTransmitLEDOn()
-		}
-		if LCDEnabled == true {
-			LcdText[0] = "Online/TX"
-			LcdText[3] = "TX at " + t.Format("15:04:05")
-			LcdDisplay(LcdText, LCDRSPin, LCDEPin, LCDD4Pin, LCDD5Pin, LCDD6Pin, LCDD7Pin, LCDInterfaceType, LCDI2CAddress)
-		}
-		if OLEDEnabled == true {
-			Oled.DisplayOn()
-			LCDIsDark = false
-			oledDisplay(false, 0, 1, "Online/TX")
-			oledDisplay(false, 3, 1, "TX at "+t.Format("15:04:05"))
-			oledDisplay(false, 6, 1, "Please Visit       ")
-			oledDisplay(false, 7, 1, "www.talkkonnect.com")
-		}
 	}
 
 	b.IsTransmitting = true
@@ -189,34 +126,9 @@ func (b *Talkkonnect) TransmitStop(withBeep bool) {
 		return
 	}
 
-	b.BackLightTimer()
-
-	if TargetBoard == "rpi" {
-		if !LedStripEnabled {
-			b.LEDOff(b.TransmitLED)
-		} else {
-			MyLedStripTransmitLEDOff()
-		}
-		if LCDEnabled == true {
-			LcdText[0] = b.Address
-			LcdDisplay(LcdText, LCDRSPin, LCDEPin, LCDD4Pin, LCDD5Pin, LCDD6Pin, LCDD7Pin, LCDInterfaceType, LCDI2CAddress)
-		}
-		if OLEDEnabled == true {
-			oledDisplay(false, 0, 1, b.Address)
-		}
-	}
-
 	b.IsTransmitting = false
 	b.Stream.StopSource()
 
-	if SimplexWithMute {
-		err := volume.Unmute(OutputDevice)
-		if err != nil {
-			log.Println("error: Unable to Unmute ", err)
-		} else {
-			log.Println("info: Speaker UnMuted ")
-		}
-	}
 }
 
 func (b *Talkkonnect) ChangeChannel(ChannelName string) {
@@ -224,24 +136,10 @@ func (b *Talkkonnect) ChangeChannel(ChannelName string) {
 		return
 	}
 
-	b.BackLightTimer()
-
 	channel := b.Client.Channels.Find(ChannelName)
 	if channel != nil {
 
 		b.Client.Self.Move(channel)
-
-		if TargetBoard == "rpi" {
-			if LCDEnabled == true {
-				LcdText[1] = "Joined " + ChannelName
-				LcdText[2] = Username[AccountIndex]
-				LcdDisplay(LcdText, LCDRSPin, LCDEPin, LCDD4Pin, LCDD5Pin, LCDD6Pin, LCDD7Pin, LCDInterfaceType, LCDI2CAddress)
-			}
-			if OLEDEnabled == true {
-				oledDisplay(false, 0, 1, "Joined "+ChannelName)
-				oledDisplay(false, 1, 1, Username[AccountIndex])
-			}
-		}
 
 		log.Println("info: Joined Channel Name: ", channel.Name, " ID ", channel.ID)
 		prevChannelID = b.Client.Self.Channel.ID
@@ -255,8 +153,6 @@ func (b *Talkkonnect) ParticipantLEDUpdate(verbose bool) {
 	if !(IsConnected) {
 		return
 	}
-
-	b.BackLightTimer()
 
 	var participantCount = len(b.Client.Self.Channel.Users)
 
@@ -277,70 +173,21 @@ func (b *Talkkonnect) ParticipantLEDUpdate(verbose bool) {
 
 	if participantCount > 1 && participantCount != prevParticipantCount {
 
-		if TTSEnabled && TTSParticipants {
-			speech := htgotts.Speech{Folder: "audio", Language: "en"}
-			speech.Speak("There Are Currently " + strconv.Itoa(participantCount) + " Users in The Channel " + b.Client.Self.Channel.Name)
-		}
-
 		prevParticipantCount = participantCount
 
 		if verbose {
 			log.Println("info: Current Channel ", b.Client.Self.Channel.Name, " has (", participantCount, ") participants")
 			b.ListUsers()
-			if TargetBoard == "rpi" {
-				if LCDEnabled == true {
-					LcdText[0] = b.Address
-					LcdText[1] = b.Client.Self.Channel.Name + " (" + strconv.Itoa(participantCount) + " Users)"
-					LcdDisplay(LcdText, LCDRSPin, LCDEPin, LCDD4Pin, LCDD5Pin, LCDD6Pin, LCDD7Pin, LCDInterfaceType, LCDI2CAddress)
-				}
-				if OLEDEnabled == true {
-					oledDisplay(false, 0, 1, b.Address)
-					oledDisplay(false, 1, 1, b.Client.Self.Channel.Name+" ("+strconv.Itoa(participantCount)+" Users)")
-					oledDisplay(false, 6, 1, "Please Visit")
-					oledDisplay(false, 7, 1, "www.talkkonnect.com")
-				}
-
-			}
 		}
 	}
 
 	if participantCount > 1 {
-		if TargetBoard == "rpi" {
-			if !LedStripEnabled {
-				b.LEDOn(b.ParticipantsLED)
-				b.LEDOn(b.OnlineLED)
-			} else {
-				MyLedStripParticipantsLEDOn()
-				MyLedStripOnlineLEDOn()
-			}
-		}
 
 	} else {
 
 		if verbose {
-			if TTSEnabled && TTSParticipants {
-				speech := htgotts.Speech{Folder: "audio", Language: "en"}
-				speech.Speak("You are Currently Alone in The Channel " + b.Client.Self.Channel.Name)
-			}
 			log.Println("info: Channel ", b.Client.Self.Channel.Name, " has no other participants")
-
 			prevParticipantCount = 0
-
-			if TargetBoard == "rpi" {
-				if !LedStripEnabled {
-					b.LEDOff(b.ParticipantsLED)
-				} else {
-					MyLedStripParticipantsLEDOff()
-				}
-				if LCDEnabled == true {
-					LcdText = [4]string{b.Address, "Alone in " + b.Client.Self.Channel.Name, "", "nil"}
-					LcdDisplay(LcdText, LCDRSPin, LCDEPin, LCDD4Pin, LCDD5Pin, LCDD6Pin, LCDD7Pin, LCDInterfaceType, LCDI2CAddress)
-				}
-				if OLEDEnabled == true {
-					oledDisplay(false, 0, 1, b.Address)
-					oledDisplay(false, 1, 1, "Alone in "+b.Client.Self.Channel.Name)
-				}
-			}
 		}
 	}
 }
@@ -420,16 +267,6 @@ func (b *Talkkonnect) ChannelUp() {
 	// Set Upper Boundary
 	if b.Client.Self.Channel.ID == maxchannelid {
 		log.Println("error: Can't Increment Channel Maximum Channel Reached")
-		if TargetBoard == "rpi" {
-			if LCDEnabled == true {
-				LcdText[2] = "Max Chan Reached"
-				LcdDisplay(LcdText, LCDRSPin, LCDEPin, LCDD4Pin, LCDD5Pin, LCDD6Pin, LCDD7Pin, LCDInterfaceType, LCDI2CAddress)
-			}
-			if OLEDEnabled == true {
-				oledDisplay(false, 1, 1, "Max Chan Reached")
-			}
-
-		}
 		return
 	}
 
@@ -446,21 +283,6 @@ func (b *Talkkonnect) ChannelUp() {
 				b.Client.Self.Move(channel)
 				//displaychannel
 				time.Sleep(500 * time.Millisecond)
-				if TargetBoard == "rpi" {
-
-					if len(b.Client.Self.Channel.Users) == 1 {
-						LcdText[1] = "Alone in " + b.Client.Self.Channel.Name
-					} else {
-						LcdText[1] = b.Client.Self.Channel.Name + " (" + strconv.Itoa(len(b.Client.Self.Channel.Users)) + " Users)"
-					}
-
-					if LCDEnabled == true {
-						LcdDisplay(LcdText, LCDRSPin, LCDEPin, LCDD4Pin, LCDD5Pin, LCDD6Pin, LCDD7Pin, LCDInterfaceType, LCDI2CAddress)
-					}
-					if OLEDEnabled == true {
-						oledDisplay(false, 1, 1, LcdText[1])
-					}
-				}
 				break
 			}
 		}
@@ -477,14 +299,6 @@ func (b *Talkkonnect) ChannelDown() {
 		prevChannelID = b.Client.Self.Channel.ID
 	}
 
-	if TTSEnabled && TTSChannelDown {
-		err := playWavLocal(TTSChannelDownFilenameAndPath, TTSVolumeLevel)
-		if err != nil {
-			log.Println("error: playWavLocal(TTSChannelDownFilenameAndPath) Returned Error: ", err)
-		}
-
-	}
-
 	prevButtonPress = "ChannelDown"
 	b.ListChannels(false)
 
@@ -495,22 +309,7 @@ func (b *Talkkonnect) ChannelDown() {
 		b.Client.Self.Move(channel)
 		//displaychannel
 		time.Sleep(500 * time.Millisecond)
-		if TargetBoard == "rpi" {
-
-			if len(b.Client.Self.Channel.Users) == 1 {
-				LcdText[1] = "Alone in " + b.Client.Self.Channel.Name
-			} else {
-				LcdText[1] = b.Client.Self.Channel.Name + " (" + strconv.Itoa(len(b.Client.Self.Channel.Users)) + " Users)"
-			}
-
-			if LCDEnabled == true {
-				LcdDisplay(LcdText, LCDRSPin, LCDEPin, LCDD4Pin, LCDD5Pin, LCDD6Pin, LCDD7Pin, LCDInterfaceType, LCDI2CAddress)
-			}
-			if OLEDEnabled == true {
-				oledDisplay(false, 1, 1, LcdText[1])
-			}
-		}
-
+		
 		return
 	}
 
@@ -525,22 +324,6 @@ func (b *Talkkonnect) ChannelDown() {
 				b.Client.Self.Move(channel)
 				//displaychannel
 				time.Sleep(500 * time.Millisecond)
-				if TargetBoard == "rpi" {
-
-					if len(b.Client.Self.Channel.Users) == 1 {
-						LcdText[1] = "Alone in " + b.Client.Self.Channel.Name
-					} else {
-						LcdText[1] = b.Client.Self.Channel.Name + " (" + strconv.Itoa(len(b.Client.Self.Channel.Users)) + " Users)"
-					}
-
-					if LCDEnabled == true {
-						LcdDisplay(LcdText, LCDRSPin, LCDEPin, LCDD4Pin, LCDD5Pin, LCDD6Pin, LCDD7Pin, LCDInterfaceType, LCDI2CAddress)
-					}
-					if OLEDEnabled == true {
-						oledDisplay(false, 1, 1, LcdText[1])
-					}
-				}
-
 				break
 			}
 		}
@@ -593,40 +376,9 @@ func (b *Talkkonnect) SendMessage(textmessage string, PRecursive bool) {
 
 func (b *Talkkonnect) SetComment(comment string) {
 	if IsConnected {
-		b.BackLightTimer()
 		b.Client.Self.SetComment(comment)
 		t := time.Now()
-		if TargetBoard == "rpi" {
-			if LCDEnabled == true {
-				LcdText[2] = "Status at " + t.Format("15:04:05")
-				time.Sleep(500 * time.Millisecond)
-				LcdText[3] = b.Client.Self.Comment
-				LcdDisplay(LcdText, LCDRSPin, LCDEPin, LCDD4Pin, LCDD5Pin, LCDD6Pin, LCDD7Pin, LCDInterfaceType, LCDI2CAddress)
-			}
-			if OLEDEnabled == true {
-				oledDisplay(false, 1, 1, "Status at "+t.Format("15:04:05"))
-				oledDisplay(false, 4, 1, b.Client.Self.Comment)
-			}
-		}
 	}
-}
-
-func (b *Talkkonnect) BackLightTimer() {
-	BackLightTime = *BackLightTimePtr
-
-	if TargetBoard != "rpi" || (LCDBackLightTimerEnabled == false && OLEDEnabled == false && LCDEnabled == false) {
-		return
-	}
-
-	if LCDEnabled == true {
-		b.LEDOn(b.BackLightLED)
-	}
-
-	if OLEDEnabled == true {
-		Oled.DisplayOn()
-	}
-
-	BackLightTime.Reset(time.Duration(LCDBackLightTimeoutSecs) * time.Second)
 }
 
 func (b *Talkkonnect) TxLockTimer() {
@@ -669,26 +421,5 @@ func (b *Talkkonnect) pingServers() {
 		log.Println("info: Server Version:         ", major, ".", minor, ".", patch)
 		log.Println("info: Server Users:           ", resp.ConnectedUsers, "/", resp.MaximumUsers)
 		log.Println("info: Server Maximum Bitrate: ", resp.MaximumBitrate)
-	}
-}
-
-func (b *Talkkonnect) repeatTx() {
-	for i := 0; i < 100; i++ {
-		b.TransmitStart()
-		b.IsTransmitting = true
-		time.Sleep(1 * time.Second)
-		b.TransmitStop(true)
-		b.IsTransmitting = false
-		time.Sleep(1 * time.Second)
-		if i > 0 {
-			log.Println("info: TX Cycle ", i)
-			if isrepeattx {
-				log.Println("info: Repeat Tx Loop Text Forcefully Stopped")
-			}
-		}
-
-		if isrepeattx {
-			break
-		}
 	}
 }

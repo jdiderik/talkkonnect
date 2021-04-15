@@ -35,7 +35,6 @@ import (
 	"errors"
 	"fmt"
 	"github.com/jdiderik/go-openal/openal"
-	"github.com/jdiderik/gpio"
 	"github.com/jdiderik/gumble/gumble"
 	"github.com/jdiderik/gumble/gumbleffmpeg"
 	"log"
@@ -47,8 +46,6 @@ import (
 var (
 	errState         = errors.New("gumbleopenal: invalid state")
 	lcdtext          = [4]string{"nil", "nil", "nil", ""}
-	BackLightLED     = gpio.NewOutput(uint(LCDBackLightLEDPin), false)
-	VoiceActivityLED = gpio.NewOutput(VoiceActivityLEDPin, false)
 	now              = time.Now()
 	LastTime         = now.Unix()
 	debuglevel       = 2
@@ -148,10 +145,6 @@ func (s *Stream) StopSource() error {
 
 func (s *Stream) OnAudioStream(e *gumble.AudioStreamEvent) {
 
-	if TargetBoard == "rpi" && LCDEnabled == true {
-		LEDOffFunc(BackLightLED)
-	}
-
 	StreamCounter++
 
 	TalkedTicker := time.NewTicker(200 * time.Millisecond)
@@ -165,27 +158,11 @@ func (s *Stream) OnAudioStream(e *gumble.AudioStreamEvent) {
 					TalkedTicker.Reset(200 * time.Millisecond)
 					if RXLEDStatus == false {
 						RXLEDStatus = true
-						LEDOnFunc(VoiceActivityLED)
 						log.Println("info: Speaking->", *e.LastSpeaker)
 						t := time.Now()
-						if TargetBoard == "rpi" {
-							if LCDEnabled == true {
-								LEDOnFunc(BackLightLED)
-								lcdtext = [4]string{"nil", "", "", *e.LastSpeaker + " " + t.Format("15:04:05")}
-								LcdDisplay(lcdtext, LCDRSPin, LCDEPin, LCDD4Pin, LCDD5Pin, LCDD6Pin, LCDD7Pin, LCDInterfaceType, LCDI2CAddress)
-								BackLightTime.Reset(time.Duration(LCDBackLightTimeoutSecs) * time.Second)
-							}
-
-							if OLEDEnabled == true {
-								Oled.DisplayOn()
-								go oledDisplay(false, 3, 1, *e.LastSpeaker+" "+t.Format("15:04:05"))
-								BackLightTime.Reset(time.Duration(LCDBackLightTimeoutSecs) * time.Second)
-							}
-						}
 					}
 				case <-TalkedTicker.C:
 					RXLEDStatus = false
-					LEDOffFunc(VoiceActivityLED)
 					TalkedTicker.Stop()
 
 				}
@@ -214,10 +191,6 @@ func (s *Stream) OnAudioStream(e *gumble.AudioStreamEvent) {
 
 		for packet := range e.C {
 			Talking <- true
-
-			if TargetBoard == "rpi" && LCDEnabled == true {
-				LEDOnFunc(BackLightLED)
-			}
 
 			if CancellableStream && NowStreaming {
 				pstream.Stop()
@@ -307,7 +280,6 @@ func (b *Talkkonnect) playIntoStream(filepath string, vol float32) {
 	if IsPlayStream == false {
 		log.Println(fmt.Sprintf("info: File %s Stopped!", filepath))
 		pstream.Stop()
-		b.LEDOff(b.TransmitLED)
 		return
 	}
 
@@ -317,8 +289,6 @@ func (b *Talkkonnect) playIntoStream(filepath string, vol float32) {
 			return
 		}
 
-		b.LEDOn(b.TransmitLED)
-
 		IsPlayStream = true
 		pstream = gumbleffmpeg.New(b.Client, gumbleffmpeg.SourceFile(filepath), vol)
 		if err := pstream.Play(); err != nil {
@@ -327,39 +297,10 @@ func (b *Talkkonnect) playIntoStream(filepath string, vol float32) {
 			log.Println(fmt.Sprintf("info: File %s Playing!", filepath))
 			pstream.Wait()
 			pstream.Stop()
-			b.LEDOff(b.TransmitLED)
 		}
 	} else {
 		log.Println(fmt.Sprintf("warn: Sound Disabled by Config"))
 	}
-	return
-}
-
-func (b *Talkkonnect) RepeaterTone() {
-
-	if RepeaterToneEnabled {
-
-		cmdArguments := []string{"-f", "lavfi", "-i", "sine=frequency=" + strconv.Itoa(RepeaterToneFrequencyHz) + ":duration=" + strconv.Itoa(RepeaterToneDurationSec), "-autoexit", "-nodisp"}
-
-		cmd := exec.Command("/usr/bin/ffplay", cmdArguments...)
-
-		var out bytes.Buffer
-
-		LEDOnFunc(VoiceActivityLED)
-		cmd.Stdout = &out
-		err := cmd.Run()
-		LEDOffFunc(VoiceActivityLED)
-
-		if err != nil {
-			log.Println("error: ffplay error ", err)
-		} else {
-			log.Println("info: Played Tone at Frequency " + strconv.Itoa(RepeaterToneFrequencyHz) + " Hz With Duration of " + strconv.Itoa(RepeaterToneDurationSec) + " Seconds For Opening Repeater")
-		}
-
-	} else {
-		log.Println(fmt.Sprintf("warn: Repeater Tone Disabled by Config"))
-	}
-
 	return
 }
 
@@ -388,17 +329,6 @@ func (b *Talkkonnect) OpenStream() {
 	}
 
 	if stream, err := New(b.Client); err != nil {
-
-		if TargetBoard == "rpi" {
-			if LCDEnabled == true {
-				LcdText = [4]string{"Stream Error!", "nil", "nil", "nil"}
-				LcdDisplay(LcdText, LCDRSPin, LCDEPin, LCDD4Pin, LCDD5Pin, LCDD6Pin, LCDD7Pin, LCDInterfaceType, LCDI2CAddress)
-			}
-			if OLEDEnabled == true {
-				oledDisplay(false, 2, 1, "Stream Error!!")
-			}
-
-		}
 		FatalCleanUp("Stream Open Error " + err.Error())
 	} else {
 		b.Stream = stream

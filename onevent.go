@@ -36,7 +36,6 @@ import (
 	"strings"
 
 	"github.com/jdiderik/gumble/gumble"
-	htgotts "github.com/jdiderik/htgo-tts"
 )
 
 func (b *Talkkonnect) OnConnect(e *gumble.ConnectEvent) {
@@ -45,7 +44,6 @@ func (b *Talkkonnect) OnConnect(e *gumble.ConnectEvent) {
 	}
 
 	IsConnected = true
-	b.BackLightTimer()
 	b.Client = e.Client
 	ConnectAttempts = 1
 
@@ -58,25 +56,6 @@ func (b *Talkkonnect) OnConnect(e *gumble.ConnectEvent) {
 		}
 	}
 
-	if TargetBoard == "rpi" {
-		if !LedStripEnabled {
-			b.LEDOn(b.OnlineLED)
-		} else {
-			MyLedStripOnlineLEDOn()
-		}
-		if LCDEnabled == true {
-			LcdText = [4]string{"nil", "nil", "nil", "nil"}
-			LcdDisplay(LcdText, LCDRSPin, LCDEPin, LCDD4Pin, LCDD5Pin, LCDD6Pin, LCDD7Pin, LCDInterfaceType, LCDI2CAddress)
-		}
-		if OLEDEnabled == true {
-			Oled.DisplayOn()
-			LCDIsDark = false
-			oledDisplay(true, 0, 0, "") // clear the screen
-		}
-
-		b.ParticipantLEDUpdate(true)
-	}
-
 	if b.ChannelName != "" {
 		b.ChangeChannel(b.ChannelName)
 		prevChannelID = b.Client.Self.Channel.ID
@@ -84,9 +63,6 @@ func (b *Talkkonnect) OnConnect(e *gumble.ConnectEvent) {
 }
 
 func (b *Talkkonnect) OnDisconnect(e *gumble.DisconnectEvent) {
-	if !ServerHop {
-		b.BackLightTimer()
-	}
 
 	var reason string
 
@@ -96,14 +72,6 @@ func (b *Talkkonnect) OnDisconnect(e *gumble.DisconnectEvent) {
 	}
 
 	IsConnected = false
-
-	if TargetBoard == "rpi" {
-		if !LedStripEnabled {
-			b.LEDOffAll()
-		} else {
-			MyLedStripLEDOffAll()
-		}
-	}
 
 	if !ServerHop {
 		log.Println("alert: Attempting Reconnect in 10 seconds...")
@@ -115,7 +83,6 @@ func (b *Talkkonnect) OnDisconnect(e *gumble.DisconnectEvent) {
 }
 
 func (b *Talkkonnect) OnTextMessage(e *gumble.TextMessageEvent) {
-	b.BackLightTimer()
 
 	if len(cleanstring(e.Message)) > 105 {
 		log.Println(fmt.Sprintf("warn: Message Too Long to Be Displayed on Screen\n"))
@@ -135,48 +102,6 @@ func (b *Talkkonnect) OnTextMessage(e *gumble.TextMessageEvent) {
 
 	log.Println(fmt.Sprintf("info: Message ("+strconv.Itoa(len(message))+") from %v %v\n", sender, message))
 
-	if TargetBoard == "rpi" {
-		if LCDEnabled == true {
-			LcdText[0] = "Msg From " + sender
-			LcdText[1] = message
-			LcdDisplay(LcdText, LCDRSPin, LCDEPin, LCDD4Pin, LCDD5Pin, LCDD6Pin, LCDD7Pin, LCDInterfaceType, LCDI2CAddress)
-		}
-		if OLEDEnabled == true {
-			oledDisplay(false, 2, 1, "Msg From "+sender)
-			if len(message) <= 21 {
-				oledDisplay(false, 3, 1, message)
-				oledDisplay(false, 4, 1, "")
-				oledDisplay(false, 5, 1, "")
-				oledDisplay(false, 6, 1, "")
-				oledDisplay(false, 7, 1, "")
-			} else if len(message) <= 42 {
-				oledDisplay(false, 3, 1, message[0:21])
-				oledDisplay(false, 4, 1, message[21:len(message)])
-				oledDisplay(false, 5, 1, "")
-				oledDisplay(false, 6, 1, "")
-				oledDisplay(false, 7, 1, "")
-			} else if len(message) <= 63 {
-				oledDisplay(false, 3, 1, message[0:21])
-				oledDisplay(false, 4, 1, message[21:42])
-				oledDisplay(false, 5, 1, message[42:len(message)])
-				oledDisplay(false, 6, 1, "")
-				oledDisplay(false, 7, 1, "")
-			} else if len(message) <= 84 {
-				oledDisplay(false, 3, 1, message[0:21])
-				oledDisplay(false, 4, 1, message[21:42])
-				oledDisplay(false, 5, 1, message[42:63])
-				oledDisplay(false, 6, 1, message[63:len(message)])
-				oledDisplay(false, 7, 1, "")
-			} else if len(message) <= 105 {
-				oledDisplay(false, 3, 1, message[0:20])
-				oledDisplay(false, 4, 1, message[21:44])
-				oledDisplay(false, 5, 1, message[42:63])
-				oledDisplay(false, 6, 1, message[63:84])
-				oledDisplay(false, 7, 1, message[84:105])
-			}
-		}
-	}
-
 	if EventSoundEnabled {
 		err := playWavLocal(EventMessageSoundFilenameAndPath, 100)
 		if err != nil {
@@ -186,7 +111,6 @@ func (b *Talkkonnect) OnTextMessage(e *gumble.TextMessageEvent) {
 }
 
 func (b *Talkkonnect) OnUserChange(e *gumble.UserChangeEvent) {
-	b.BackLightTimer()
 
 	var info string
 
@@ -208,8 +132,6 @@ func (b *Talkkonnect) OnUserChange(e *gumble.UserChangeEvent) {
 	case gumble.UserChangeChannel:
 		info = "chg channel"
 		log.Println("info:", cleanstring(e.User.Name), " Changed Channel to ", e.User.Channel.Name)
-		LcdText[2] = cleanstring(e.User.Name) + "->" + e.User.Channel.Name
-		LcdText[3] = ""
 	case gumble.UserChangeComment:
 		info = "chg comment"
 	case gumble.UserChangeAudio:
@@ -224,18 +146,11 @@ func (b *Talkkonnect) OnUserChange(e *gumble.UserChangeEvent) {
 		if info != "chg channel" {
 			if info != "" {
 				log.Println("info: User ", cleanstring(e.User.Name), " ", info, "Event type=", e.Type, " channel=", e.User.Channel.Name)
-				if TTSEnabled && TTSParticipants {
-					speech := htgotts.Speech{Folder: "audio", Language: "en"}
-					speech.Speak("User ")
-				}
 			}
 
 		} else {
 			log.Println("info: User ", cleanstring(e.User.Name), " Event type=", e.Type, " channel=", e.User.Channel.Name)
 		}
-
-		LcdText[2] = cleanstring(e.User.Name) + " " + info //+strconv.Atoi(string(e.Type))
-
 	}
 
 	b.ParticipantLEDUpdate(true)
@@ -249,7 +164,6 @@ func (b *Talkkonnect) OnPermissionDenied(e *gumble.PermissionDeniedEvent) {
 		info = e.String
 	case gumble.PermissionDeniedPermission:
 		info = "insufficient permissions"
-		LcdText[2] = "insufficient perms"
 
 		// Set Upper Boundary
 		if prevButtonPress == "ChannelUp" && b.Client.Self.Channel.ID == maxchannelid {
@@ -275,16 +189,6 @@ func (b *Talkkonnect) OnPermissionDenied(e *gumble.PermissionDeniedEvent) {
 			LcdText[1] = b.Client.Self.Channel.Name + " (" + strconv.Itoa(len(b.Client.Self.Channel.Users)) + " Users)"
 		}
 
-		if TargetBoard == "rpi" {
-			if LCDEnabled == true {
-				LcdDisplay(LcdText, LCDRSPin, LCDEPin, LCDD4Pin, LCDD5Pin, LCDD6Pin, LCDD7Pin, LCDInterfaceType, LCDI2CAddress)
-			}
-			if OLEDEnabled == true {
-				oledDisplay(false, 1, 1, LcdText[1])
-				oledDisplay(false, 2, 1, LcdText[2])
-			}
-		}
-
 	case gumble.PermissionDeniedSuperUser:
 		info = "cannot modify SuperUser"
 	case gumble.PermissionDeniedInvalidChannelName:
@@ -302,8 +206,6 @@ func (b *Talkkonnect) OnPermissionDenied(e *gumble.PermissionDeniedEvent) {
 	case gumble.PermissionDeniedNestingLimit:
 		info = "nesting limit"
 	}
-
-	LcdText[2] = info
 
 	log.Println("error: Permission denied  ", info)
 }

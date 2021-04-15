@@ -30,7 +30,6 @@
 package talkkonnect
 
 import (
-	"github.com/jdiderik/volume-go"
 	"log"
 	"os"
 	"strconv"
@@ -126,17 +125,6 @@ func (b *Talkkonnect) talkkonnectMenu(backgroundcolor string) {
 		}
 	}
 
-	origMuted, _ := volume.GetMuted(OutputDevice)
-	if origMuted {
-		log.Println("info: Speaker Currently Muted")
-	} else {
-		origVolume, err := volume.GetVolume(OutputDevice)
-		if err == nil {
-			log.Printf("info: Speaker Not Muted & Current Volume at Level %v%%\n", origVolume)
-		} else {
-			log.Println("error: Can't Get Volume Level From Sound Card!")
-		}
-	}
 	hostname, err1 := os.Hostname()
 	if err1 != nil {
 		log.Printf("warn: Cannot Get Hostname\n")

@@ -54,7 +54,6 @@ import (
 	"github.com/kennygrant/sanitize"
 	"github.com/jdiderik/gumble/gumble"
 	term "github.com/jdiderik/termbox-go"
-	"github.com/xackery/gomail"
 )
 
 func reset() {
@@ -189,19 +188,6 @@ func playWavLocal(filepath string, playbackvolume int) error {
 
 	return nil
 }
-
-func sendviagmail(username string, password string, receiver string, subject string, message string) error {
-
-	err := gomail.Send(username, password, []string{receiver}, subject, message)
-	if err != nil {
-		return fmt.Errorf("sending Email Via GMAIL Error")
-	}
-
-	go LcdDisplay(LcdText, LCDRSPin, LCDEPin, LCDD4Pin, LCDD5Pin, LCDD6Pin, LCDD7Pin, LCDInterfaceType, LCDI2CAddress)
-
-	return nil
-}
-
 func clearfiles() { // Testing os.Remove to delete files
 	err := os.RemoveAll(`/avrec`)
 	if err != nil {

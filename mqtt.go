@@ -48,64 +48,12 @@ package talkkonnect
 import (
 	"crypto/tls"
 	MQTT "github.com/eclipse/paho.mqtt.golang"
-	"github.com/jdiderik/gpio"
 	"log"
 	"os"
 	"os/signal"
 	"syscall"
 	"time"
 )
-
-func relayAllPulse() {
-	if relayAllState {
-		relayCommand(0, "off")
-	} else {
-		relayCommand(0, "on")
-	}
-	relayAllState = !relayAllState
-}
-
-func relayCommand(relayNo int, command string) {
-	// all relays (0)
-	if relayNo == 0 {
-		for i := 1; i <= int(TotalRelays); i++ {
-			if command == "on" {
-				log.Println("info: Relay ", i, "On")
-				gpio.NewOutput(RelayPins[i], false)
-
-			}
-			if command == "off" {
-				log.Println("info: Relay ", i, "Off")
-				gpio.NewOutput(RelayPins[i], true)
-			}
-			if command == "pulse" {
-				log.Println("info: Relay ", i, "Pulse")
-				gpio.NewOutput(RelayPins[i], false)
-				time.Sleep(RelayPulseMills * time.Millisecond)
-				gpio.NewOutput(RelayPins[i], true)
-			}
-		}
-		return
-	}
-
-	//specific relay (Number Between 1 and TotalRelays)
-	if relayNo >= 0 && relayNo <= int(TotalRelays) {
-		if command == "on" {
-			log.Println("info: Relay ", relayNo, "On")
-			gpio.NewOutput(RelayPins[relayNo], false)
-		}
-		if command == "off" {
-			log.Println("info: Relay ", relayNo, "Off")
-			gpio.NewOutput(RelayPins[relayNo], true)
-		}
-		if command == "pulse" {
-			log.Println("info: Relay ", relayNo, "Pulse")
-			gpio.NewOutput(RelayPins[relayNo], false)
-			time.Sleep(RelayPulseMills * time.Millisecond)
-			gpio.NewOutput(RelayPins[relayNo], true)
-		}
-	}
-}
 
 func mqtttestpub() {
 
@@ -221,15 +169,6 @@ func (b *Talkkonnect) onMessageReceived(client MQTT.Client, message MQTT.Message
 	case "Unmute":
 		log.Println("info: MQTT Mute/UnMute Speaker Request Processed Successfully\n")
 		b.cmdMuteUnmute("unmute")
-	case "CurrentVolume":
-		log.Println("info: MQTT Current Volume Level Request Processed Successfully\n")
-		b.cmdCurrentVolume()
-	case "VolumeUp":
-		log.Println("info: MQTT Digital Volume Up Request Processed Successfully\n")
-		b.cmdVolumeUp()
-	case "VolumeDown":
-		log.Println("info: MQTT Digital Volume Down Request Processed Successfully\n")
-		b.cmdVolumeDown()
 	case "ListChannels":
 		log.Println("info: MQTT List Server Channels Request Processed Successfully\n")
 		b.cmdListServerChannels()
@@ -245,60 +184,18 @@ func (b *Talkkonnect) onMessageReceived(client MQTT.Client, message MQTT.Message
 	case "Stream-Toggle":
 		log.Println("info: MQTT Play/Stop Stream Request Processed Successfully\n")
 		b.cmdPlayback()
-	case "GPSPosition":
-		log.Println("info: MQTT Request GPS Position Processed Successfully\n")
-		b.cmdGPSPosition()
-	case "SendEmail":
-		log.Println("info: MQTT Send Email Processed Successfully\n")
-		b.cmdSendEmail()
-	case "ConnPreviousServer":
-		log.Println("info: MQTT Previous Server Processed Successfully\n")
-		b.cmdConnPreviousServer()
-	case "ConnNextServer":
-		log.Println("info: MQTT Next Server Processed Successfully\n")
-		b.cmdConnNextServer()
 	case "ClearScreen":
 		log.Println("info: MQTT Clear Screen Processed Successfully\n")
 		b.cmdClearScreen()
 	case "PingServers":
 		log.Println("info: MQTT Ping Servers Processed Successfully\n")
 		b.cmdPingServers()
-	case "PanicSimulation":
-		log.Println("info: MQTT Request Panic Simulation Processed Successfully\n")
-		b.cmdPanicSimulation()
-	case "RepeatTxLoop":
-		log.Println("info: MQTT Request Repeat Tx Loop Test Processed Successfully\n")
-		b.cmdRepeatTxLoop()
 	case "ScanChannels":
 		log.Println("info: MQTT Request Scan Processed Successfully\n")
 		b.cmdScanChannels()
-	case "Thanks":
-		log.Println("info: MQTT Request Show Acknowledgements Processed Successfully\n")
-		b.cmdThanks()
 	case "ShowUptime":
 		log.Println("info: MQTT Request Current Version Successfully\n")
 		b.cmdShowUptime()
-	case "DumpXMLConfig":
-		log.Println("info: MQTT Print XML Config Processed Successfully\n")
-		b.cmdDumpXMLConfig()
-	case "attentionled:on":
-		log.Println("info: MQTT Turn On Attention LED Successfully\n")
-		b.LEDOn(b.AttentionLED)
-	case "attentionled:off":
-		log.Println("info: MQTT Turn Off Attention LED Successfully\n")
-		b.LEDOff(b.AttentionLED)
-	case "relay1:on":
-		log.Println("info: MQTT Turn On Relay 1 Successfully\n")
-		relayCommand(1, "on")
-	case "relay1:off":
-		log.Println("info: MQTT Turn Off Relay 1 Successfully\n")
-		relayCommand(1, "off")
-	case "relay1:pulse":
-		log.Println("info: MQTT Pulse Relay 1 Successfully\n")
-		relayCommand(1, "pulse")
-	case "PlayRepeaterTone":
-		log.Println("info: MQTT Play Repeater Tone Processed Successfully\n")
-		b.cmdPlayRepeaterTone()
 
 	// todo add other automation control for buttons, relays and leds here as needed in the future
 	default:

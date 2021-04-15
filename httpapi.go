@@ -45,7 +45,6 @@ func (b *Talkkonnect) httpAPI(w http.ResponseWriter, r *http.Request) {
 
 	command := commands[0]
 	log.Println("debug: http command " + string(command))
-	b.BackLightTimer()
 
 	switch string(command) {
 	case "DisplayMenu":
@@ -68,48 +67,6 @@ func (b *Talkkonnect) httpAPI(w http.ResponseWriter, r *http.Request) {
 			fmt.Fprintf(w, "API Channel Down Request Processed Successfully\n")
 		} else {
 			fmt.Fprintf(w, "API Channel Down Request Denied\n")
-		}
-	case "Mute-Toggle":
-		if APIMute {
-			b.cmdMuteUnmute("toggle")
-			fmt.Fprintf(w, "API Mute/UnMute Speaker Request Processed Successfully\n")
-		} else {
-			fmt.Fprintf(w, "API Mute/Unmute Speaker Request Denied\n")
-		}
-	case "Mute":
-		if APIMute {
-			b.cmdMuteUnmute("mute")
-			fmt.Fprintf(w, "API Mute/UnMute Speaker Request Processed Successfully\n")
-		} else {
-			fmt.Fprintf(w, "API Mute/Unmute Speaker Request Denied\n")
-		}
-	case "Unmute":
-		if APIMute {
-			b.cmdMuteUnmute("unmute")
-			fmt.Fprintf(w, "API Mute/UnMute Speaker Request Processed Successfully\n")
-		} else {
-			fmt.Fprintf(w, "API Mute/Unmute Speaker Request Denied\n")
-		}
-	case "CurrentVolume":
-		if APICurrentVolumeLevel {
-			b.cmdCurrentVolume()
-			fmt.Fprintf(w, "API Current Volume Level Request Processed Successfully\n")
-		} else {
-			fmt.Fprintf(w, "API Current Volume Level Request Denied\n")
-		}
-	case "VolumeUp":
-		if APIDigitalVolumeUp {
-			b.cmdVolumeUp()
-			fmt.Fprintf(w, "API Digital Volume Up Request Processed Successfully\n")
-		} else {
-			fmt.Fprintf(w, "API Digital Volume Up Request Denied\n")
-		}
-	case "VolumeDown":
-		if APIDigitalVolumeDown {
-			b.cmdVolumeDown()
-			fmt.Fprintf(w, "API Digital Volume Down Request Processed Successfully\n")
-		} else {
-			fmt.Fprintf(w, "API Digital Volume Down Request Denied\n")
 		}
 	case "ListChannels":
 		if APIListServerChannels {
@@ -146,35 +103,6 @@ func (b *Talkkonnect) httpAPI(w http.ResponseWriter, r *http.Request) {
 		} else {
 			fmt.Fprintf(w, "API Play/Stop Stream Request Denied\n")
 		}
-	case "GPSPosition":
-		if APIRequestGpsPosition {
-			b.cmdGPSPosition()
-			fmt.Fprintf(w, "API Request GPS Position Processed Successfully\n")
-		} else {
-			fmt.Fprintf(w, "API Request GPS Position Denied\n")
-		}
-
-	case "SendEmail":
-		if APIEmailEnabled {
-			b.cmdSendEmail()
-			fmt.Fprintf(w, "API Send Email Processed Successfully\n")
-		} else {
-			fmt.Fprintf(w, "API Send Email Config Denied\n")
-		}
-	case "ConnPreviousServer":
-		if APINextServer {
-			b.cmdConnPreviousServer()
-			fmt.Fprintf(w, "API Previous Server Processed Successfully\n")
-		} else {
-			fmt.Fprintf(w, "API Previous Server Denied\n")
-		}
-	case "ConnNextServer":
-		if APINextServer {
-			b.cmdConnNextServer()
-			fmt.Fprintf(w, "API Next Server Processed Successfully\n")
-		} else {
-			fmt.Fprintf(w, "API Next Server Denied\n")
-		}
 
 	case "ClearScreen":
 		if APIClearScreen {
@@ -190,34 +118,6 @@ func (b *Talkkonnect) httpAPI(w http.ResponseWriter, r *http.Request) {
 		} else {
 			fmt.Fprintf(w, "API Ping Servers Denied\n")
 		}
-	case "PanicSimulation":
-		if APIPanicSimulation {
-			b.cmdPanicSimulation()
-			fmt.Fprintf(w, "API Request Panic Simulation Processed Successfully\n")
-		} else {
-			fmt.Fprintf(w, "API Request Panic Simulation Denied\n")
-		}
-	case "RepeatTxLoop":
-		if APIRepeatTxLoopTest {
-			b.cmdRepeatTxLoop()
-			fmt.Fprintf(w, "API Request Repeat Tx Loop Test Processed Successfully\n")
-		} else {
-			fmt.Fprintf(w, "API Request Repeat Tx Loop Test Denied\n")
-		}
-	case "ScanChannels":
-		if APIScanChannels {
-			b.cmdScanChannels()
-			fmt.Fprintf(w, "API Request Scan Processed Successfully\n")
-		} else {
-			fmt.Fprintf(w, "API Request Scan Denied\n")
-		}
-	case "Thanks":
-		if true {
-			b.cmdThanks()
-			fmt.Fprintf(w, "API Request Show Acknowledgements Processed Successfully\n")
-		} else {
-			fmt.Fprintf(w, "API Request Show Acknowledgements Denied\n")
-		}
 	case "ShowUptime":
 		if APIDisplayVersion {
 			b.cmdShowUptime()
@@ -225,16 +125,6 @@ func (b *Talkkonnect) httpAPI(w http.ResponseWriter, r *http.Request) {
 		} else {
 			fmt.Fprintf(w, "API Request Current Version Denied\n")
 		}
-	case "DumpXMLConfig":
-		if APIPrintXmlConfig {
-			b.cmdDumpXMLConfig()
-			fmt.Fprintf(w, "API Print XML Config Processed Successfully\n")
-		} else {
-			fmt.Fprintf(w, "API Print XML Congfig Denied\n")
-		}
-	case "PlayRepeaterTone":
-		b.cmdPlayRepeaterTone()
-		fmt.Fprintf(w, "API Play Repeater Tone Processed Successfully\n")
 	default:
 		fmt.Fprintf(w, "API Command Not Defined\n")
 	}
